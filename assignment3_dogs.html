@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dogs</title>
+
+  <!-- Css -->
+  <link rel="stylesheet" href="assignment3_style.css">
+
+  <!-- Annyang -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"/>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <ul class="navbar">
+    <li><a href="assignment3_index.html">Home</a></li>
+    <li><a href="assignment3_stocks.html">Stocks</a></li>
+    <li><a href="assignment3_dogs.html">Dogs</a></li>
+  </ul>
+
+  <!-- Title -->
+  <h1>Dog Explorer</h1>
+
+  <!-- Pictures -->
+  <div class="swiper">
+    <div class="swiper-wrapper" id="dogImages"></div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <!-- Breeds -->
+  <h2>Dog Breeds</h2>
+  <div id="breedButtons"></div>
+
+  <!-- Breed Information -->
+  <div id="breedInfo"></div>
+
+  <!-- Audio -->
+  <div class="audio-box">
+    <h3>Voice Commands</h3>
+
+    <p><strong>Basic Commands:</strong></p>
+    <p>• "Hello"</p>
+    <p>• "Change the color to blue"</p>
+    <p>• "Navigate to home"</p>
+
+    <p><strong>Dog Page Command:</strong></p>
+    <p>• "Load dog breed husky"</p>
+
+    <button onclick="annyang.start()">Turn On Audio</button>
+    <button onclick="annyang.abort()">Turn Off Audio</button>
+  </div>
+
+  <!-- Swiper Js -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Js -->
+  <script src="assignment3_script.js"></script>
+
+</body>
+</html>
