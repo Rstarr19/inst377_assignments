@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+
+  <!-- Css -->
+  <link rel="stylesheet" href="assignment3_style.css">
+
+  <!-- Annyang Voice Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+</head>
+
+<body>
+
+  
+  <!-- Navigation -->
+  <ul class="navbar">
+    <li><a href="assignment3_index.html">Home</a></li>
+    <li><a href="assignment3_stocks.html">Stocks</a></li>
+    <li><a href="assignment3_dogs.html">Dogs</a></li>
+  </ul>
+
+
+  <!-- Main Content -->
+  <h1>Welcome to Assignment 3</h1>
+
+  <h2>Quote of the Day</h2>
+  <p id="quote">Loading quote...</p>
+
+  <!-- Navigation -->
+  <div>
+    <button onclick="location.href='assignment3_stocks.html'">Go to Stocks</button>
+    <button onclick="location.href='assignment3_dogs.html'">Go to Dogs</button>
+  </div>
+
+
+  <!-- Audio -->
+
+  <div class="audio-box">
+    <h3>Voice Commands</h3>
+    <p>Say "Hello"</p>
+    <p>Say "Change the color to red"</p>
+    <p>Say "Navigate to stocks"</p>
+
+    <button onclick="annyang.start()">Turn On Audio</button>
+    <button onclick="annyang.abort()">Turn Off Audio</button>
+  </div>
+
+  <!-- Js-->
+  <script src="assignment3_script.js"></script>
+
+</body>
+</html>
