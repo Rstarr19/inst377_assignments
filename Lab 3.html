@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Lab 3 - Rock Paper Scissors</title>
+    <link rel="stylesheet" href="Lab 3 - Styles.css" />
+</head>
+
+<body>
+
+    <header>
+        <h1>Lab 3 - Rock Paper Scissors</h1>
+
+        <nav>
+            <ul class="nav">
+                <li>
+                    <a href="https://www.playworks.org/game-library/ro-sham-bo-or-rock-paper-scissors/" target="_blank">
+                        How to Play
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://remptongames.com/2024/08/24/how-to-win-rock-paper-scissors-and-why-it-matters-more-than-you-think/#:~:text=Mathematically%2C%20rock%2Dpaper%2Dscissors,is%20to%20simply%20pick%20randomly."
+                        target="_blank">
+                        What's Best
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://store.clickhole.com/cdn/shop/files/Untitleddesign_6.png?v=1693423886"
+                        target="_blank">
+                        Secret Surprise
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <main class="main-content">
+
+            <h2>Play the Game</h2>
+
+            <form id="gameForm">
+
+                <label for="name">Name:</label>
+                <input id="name" name="name" type="text" required />
+
+                <br><br>
+
+                <label for="choice">Choose:</label>
+
+                <select id="choice" name="choice">
+                    <option value="rock">Rock</option>
+                    <option value="paper">Paper</option>
+                    <option value="scissors">Scissors</option>
+                </select>
+
+                <br><br>
+
+                <button type="submit">Play</button>
+
+            </form>
+
+            <br>
+
+            <p id="result"></p>
+
+        </main>
+
+        <aside class="sidebar">
+
+            <h2>How to Play</h2>
+
+            <ul>
+                <li>Rock beats Scissors.</li>
+                <li>Paper beats Rock.</li>
+                <li>Scissors beats Paper.</li>
+                <li>If both players choose the same, it is a tie.</li>
+            </ul>
+
+        </aside>
+
+    </div>
+
+    <footer class="page-bar">
+        <p>Rock Paper Scissors &copy; is the best game to play with friends!</p>
+    </footer>
+
+    <script>
+
+        document.getElementById("gameForm").addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const playerName = document.getElementById("name").value;
+            const playerChoice = document.getElementById("choice").value;
+
+            const options = ["rock", "paper", "scissors"];
+
+            const computerChoice = options[Math.floor(Math.random() * 3)];
+
+            let result = "";
+
+            if (playerChoice === computerChoice) {
+                result = "It's a tie!";
+            }
+
+            else if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+                result = "You win!";
+            }
+
+            else {
+                result = "Computer wins!";
+            }
+
+            document.getElementById("result").textContent =
+                `${playerName}, you chose ${playerChoice}. Computer chose ${computerChoice}. ${result}`;
+
+        });
+
+    </script>
+
+</body>
+
+</html>
