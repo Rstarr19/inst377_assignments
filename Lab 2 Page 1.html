@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Lab 2 - Page 1</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: rgb(255, 255, 255);
+        margin: 0;
+        padding: 0;
+      }
+
+      .formselection {
+        background-color: rgb(123, 127, 204);
+        padding: 32px;
+        margin: 20px;
+      }
+
+      .formselection label {
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .formselection input[type="text"],
+      .formselection input[type="email"] {
+        padding: 6px;
+        margin-bottom: 12px;
+        width: 250px;
+        max-width: 100%;
+      }
+
+      #submit {
+        padding: 12px 20px;
+        border-radius: 8px;
+        background-color: #f5f5f5;
+        color: rgb(102, 94, 94);
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+      }
+
+      #submit:hover {
+        background-color: #373737;
+        color: #ffffff;
+        transform: scale(1.03);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="formselection">
+      <h1>Lab 2 Contact Form</h1>
+
+      <form action="Lab 2 Page 2.html" method="GET">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+
+        <button id="submit" type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
