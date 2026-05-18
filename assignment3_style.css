@@ -1,0 +1,94 @@
+/* GENERAL PAGE STYLING */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  list-style: none;
+  background-color: #333;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.navbar li {
+  padding: 15px 25px;
+}
+
+.navbar li:hover {
+  background-color: #555; /* REQUIRED HOVER */
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* BUTTONS */
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* AUDIO BOX */
+.audio-box {
+  margin-top: 50px;
+  padding: 20px;
+  border-top: 2px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+/* TABLE */
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* DOG IMAGES */
+.swiper img {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* BREED INFO BOX */
+#breedInfo {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.breed-btn {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.breed-btn:hover {
+  background-color: #0056b3;
+}
