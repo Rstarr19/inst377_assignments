@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency Converter</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e8f5e9, #e3f2fd);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main */
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .converter-box {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            border: 2px solid #a5d6a7;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #1b5e20;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 90%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            width: 95%;
+            font-size: 16px;
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2e7d32;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #a5d6a7;
+            padding: 20px 10px;
+            text-align: center;
+        }
+
+        footer h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #1b5e20;
+        }
+
+        footer a {
+            display: inline-block;
+            margin: 8px 12px;
+            color: #1b5e20;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main -->
+    <div class="main">
+        <div class="converter-box">
+            <h1>Currency Converter</h1>
+            <p>Convert between currencies using live exchange rates.</p>
+
+            <form id="currencyForm">
+
+                <label for="fromCurrency">From:</label>
+                <select id="fromCurrency">
+                    <option>Loading currencies...</option>
+                </select>
+
+                <label for="toCurrency">To:</label>
+                <select id="toCurrency">
+                    <option>Loading currencies...</option>
+                </select>
+
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" step="0.01" required>
+
+                <button type="submit">Convert</button>
+            </form>
+
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <h3>Currency Resources</h3>
+        <a href="https://www.usmint.gov/" target="_blank">US Mint</a>
+        <a href="https://www.ramint.gov.au/" target="_blank">Australia Mint</a>
+        <a href="https://www.royalmint.com/" target="_blank">UK Royal Mint</a>
+        <a href="https://www.mint.ca/" target="_blank">Canada Mint</a>
+        <a href="https://www.ecb.europa.eu/" target="_blank">European Central Bank</a>
+        <a href="https://www.boj.or.jp/en/" target="_blank">Bank of Japan</a>
+        <a href="https://www.pbc.gov.cn/en/" target="_blank">China Central Bank</a>
+        <a href="https://www.snb.ch/en/" target="_blank">Swiss National Bank</a>
+    </footer>
+
+<script>
+    const fromDropdown = document.getElementById("fromCurrency");
+    const toDropdown = document.getElementById("toCurrency");
+    const form = document.getElementById("currencyForm");
+    const result = document.getElementById("result");
+
+    // Load 
+    window.addEventListener("load", () => {
+
+        fetch("https://frankfurter.app/currencies")
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                fromDropdown.innerHTML = "";
+                toDropdown.innerHTML = "";
+
+                for (let key in data) {
+
+                    let option1 = document.createElement("option");
+
+                    option1.value = key;
+
+                    option1.textContent = `${key} - ${data[key]}`;
+
+                    let option2 = option1.cloneNode(true);
+
+                    fromDropdown.appendChild(option1);
+
+                    toDropdown.appendChild(option2);
+                }
+
+            })
+
+            .catch(error =>
+                console.error("Error loading currencies:", error)
+            );
+
+    });
+
+    // Conversion
+    form.addEventListener("submit", (e) => {
+
+        e.preventDefault();
+
+        const amount = document.getElementById("amount").value;
+
+        const from = fromDropdown.value;
+
+        const to = toDropdown.value;
+
+        // Error state
+        if (from === to) {
+
+            alert("You cannot convert the same currencies.");
+
+            return;
+        }
+
+        fetch(
+            `https://frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`
+        )
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                const converted = data.rates[to];
+
+                result.textContent =
+                    `${amount} ${from} = ${converted} ${to}`;
+            })
+
+            .catch(error =>
+                console.error("Conversion error:", error)
+            );
+
+    });
+</script>
+
+</body>
+</html>
