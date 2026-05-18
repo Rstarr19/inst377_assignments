@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaflet Random Map</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #dbeafe, #dcfce7);  
+        }
+
+        /* Updated whimsical-professional header */
+        .header {
+            background: rgba(30, 58, 138, 0.85); /* deep blue with slight transparency */
+            color: #fefefe;
+            padding: 25px 20px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            backdrop-filter: blur(5px);
+            margin: 20px auto 0;
+            width: 90%;
+            max-width: 1100px;
+        }
+
+        .header h1 {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            font-weight: 600;
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .header h1::after {
+            content: '';
+            display: block;
+            height: 3px;
+            width: 60px;
+            background: #22c55e; /* green accent */
+            margin: 6px auto 0;
+            border-radius: 2px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .header p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-size: 1.1rem;
+            margin-top: 8px;
+            opacity: 0.85;
+        }
+
+        #map {
+            height: 400px;
+            width: 95%;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .info {
+            width: 90%;
+            max-width: 1100px;
+            margin: 20px auto;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .card {
+            background: white;
+            border-left: 6px solid #22c55e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        #marker1 { border-left-color: #3b82f6; } 
+        #marker2 { border-left-color: #22c55e; } 
+        #marker3 { border-left-color: #0ea5e9; }
+
+    </style>
+</head>
+<body>
+
+ <div class="header">
+    <h1>Random Coordinate Explorer</h1>
+    <p>Discover randomly generated locations across the U.S.</p>
+</div>
+
+<div id="map"></div>
+
+<div class="info">
+    <h2>Marker Information</h2>
+
+    <div class="card" id="marker1"></div>
+    <div class="card" id="marker2"></div>
+    <div class="card" id="marker3"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    function getRandomInRange(from, to, fixed) {
+        return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+    }
+
+    function generateCoordinates() {
+        return {
+            lat: getRandomInRange(30, 35, 3),
+            lon: getRandomInRange(-100, -90, 3)
+        };
+    }
+
+    const coords = [
+        generateCoordinates(),
+        generateCoordinates(),
+        generateCoordinates()
+    ];
+
+    const map = L.map('map').setView([39.5, -98.35], 3);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    async function getLocality(lat, lon) {
+        const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.city || data.locality || "Unknown Location";
+    }
+
+    coords.forEach(async (coord, index) => {
+        const locality = await getLocality(coord.lat, coord.lon);
+
+        L.marker([coord.lat, coord.lon])
+            .addTo(map)
+            .bindPopup(`Marker ${index + 1}<br>${locality}`)
+            .openPopup();
+
+        document.getElementById(`marker${index + 1}`).innerHTML =
+            `<strong>📍 Marker ${index + 1}</strong><br>
+            Coordinates: (${coord.lat}, ${coord.lon})<br>
+            Location: ${locality}`;
+    });
+</script>
+
+</body>
+</html>
