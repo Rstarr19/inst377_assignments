@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Book Finder</title>
+
+    <style>
+        body {
+            font-family: "Georgia", serif;
+            background-color: #f5f1e6;
+            text-align: center;
+            margin: 0;
+            padding: 40px;
+            color: #3e2f1c;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        form {
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #8b6f47;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-left: 8px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6b4f2a;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #8b6f47;
+        }
+
+        #loading {
+            display: none;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .spinner {
+            margin: 10px auto;
+            width: 40px;
+            height: 40px;
+            border: 5px solid #ddd;
+            border-top: 5px solid #6b4f2a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #resultCount {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #noResults {
+            display: none;
+            margin-top: 15px;
+            color: darkred;
+            font-weight: bold;
+        }
+
+        table {
+            margin: 25px auto;
+            border-collapse: collapse;
+            width: 80%;
+            background-color: #fffdf7;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: none;
+        }
+
+        table.show {
+            opacity: 1;
+        }
+
+        th {
+            background-color: #6b4f2a;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f0e6d6;
+        }
+
+        img {
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Library Book Finder</h1>
+    <p>Search any book from the Open Library database</p>
+
+    <form id="searchForm">
+        <input type="text" id="bookInput" placeholder="Enter book title">
+        <button type="submit">Search</button>
+        <button type="button" onclick="clearResults()">Clear</button>
+    </form>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Searching the shelves...</p>
+    </div>
+
+    <p id="resultCount"></p>
+    <p id="noResults">No books found. Try another search.</p>
+
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById("searchForm");
+        const input = document.getElementById("bookInput");
+        const loading = document.getElementById("loading");
+        const table = document.getElementById("resultsTable");
+        const tableBody = document.getElementById("tableBody");
+        const resultCount = document.getElementById("resultCount");
+        const noResults = document.getElementById("noResults");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            searchBooks(input.value);
+        });
+
+        async function searchBooks(bookName) {
+
+            const formattedName = bookName.trim().replace(/\s+/g, "+");
+
+            loading.style.display = "block";
+            table.style.display = "none";
+            noResults.style.display = "none";
+            resultCount.textContent = "";
+
+            try {
+                const response = await fetch(
+                    `https://openlibrary.org/search.json?title=${formattedName}`
+                );
+
+                const data = await response.json();
+                displayResults(data.docs);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+
+            loading.style.display = "none";
+        }
+
+        function displayResults(books) {
+            tableBody.innerHTML = "";
+
+            if (books.length === 0) {
+                noResults.style.display = "block";
+                return;
+            }
+
+            resultCount.textContent = `Found ${books.length} results`;
+
+            books.slice(0, 10).forEach(book => {
+                const row = document.createElement("tr");
+
+                // Cover
+                const coverCell = document.createElement("td");
+
+                if (book.cover_i) {
+                    const img = document.createElement("img");
+                    img.src = `https://covers.openlibrary.org/b/id/${book.cover_i}-S.jpg`;
+                    coverCell.appendChild(img);
+                } else {
+                    coverCell.textContent = "N/A";
+                }
+
+                // Title
+                const titleCell = document.createElement("td");
+                titleCell.textContent = book.title || "N/A";
+
+                // Author
+                const authorCell = document.createElement("td");
+                authorCell.textContent = book.author_name
+                    ? book.author_name.join(", ")
+                    : "Unknown";
+
+                row.appendChild(coverCell);
+                row.appendChild(titleCell);
+                row.appendChild(authorCell);
+
+                tableBody.appendChild(row);
+            });
+
+            table.style.display = "table";
+            setTimeout(() => table.classList.add("show"), 10);
+        }
+
+        function clearResults() {
+            input.value = "";
+            table.style.display = "none";
+            table.classList.remove("show");
+            tableBody.innerHTML = "";
+            resultCount.textContent = "";
+            noResults.style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
